@@ -1,0 +1,42 @@
+version: '3'
+services:
+  pgadmin4:
+    image: dpage/pgadmin4:3.3
+    container_name: pgadmin4
+    ports:
+      - 5555:80
+    volumes:
+      - pgadmin:/var/lib/pgadmin/storage
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: root
+    hostname: pgadmin4
+    restart: always
+    networks:
+      - dribble
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dribble
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - dribble
+volumes:
+  postgres-data:
+  pgadmin:
+    
+networks:
+  dribble:
+    
