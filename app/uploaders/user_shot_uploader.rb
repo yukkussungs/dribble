@@ -1,6 +1,7 @@
 class UserShotUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
+  # 画像ファイルをリサイズするため 「MiniMagick」 methodを利用する。
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
@@ -33,6 +34,7 @@ class UserShotUploader < CarrierWave::Uploader::Base
     process resize_to_fit: [800, 600]
   end
 
+  # this version is thumbnail
   version :thumb do
     process resize_to_fit: [400, 300]
   end
