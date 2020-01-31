@@ -7,7 +7,7 @@ document.addEventListener("turbolinks:load", function() {
 					evt.stopPropagation();
 					evt.preventDefault();
 
-					let files = evt.target.files || evt.dataTransfer.files; 
+                    let files = evt.target.files || evt.dataTransfer.files; 
 					// files is a FileList of File objects. List some properties.
 					for (var i = 0, f; f = files[i]; i++) {
 
@@ -15,8 +15,7 @@ document.addEventListener("turbolinks:load", function() {
 						if (!f.type.match('image.*')) {
 							continue;
 						}
-						const reader = new FileReader();
-                        console.log("reader : ", reader);
+                        const reader = new FileReader();
 						// Closure to capture the file information.
 						reader.onload = (function(theFile) {
 							return function(e) {
@@ -24,7 +23,8 @@ document.addEventListener("turbolinks:load", function() {
 								let span = document.createElement('span');
 								span.innerHTML = ['<img class="thumb" src="', e.target.result,
 									'" title="', escape(theFile.name), '"/>'
-								].join('');
+                                ].join('');
+                                console.log("span.innerHTML : " , span.innerHTML);
 								document.getElementById('list').insertBefore(span, null);
 							};
 						})(f);
@@ -43,7 +43,7 @@ document.addEventListener("turbolinks:load", function() {
 
 				// Setup the dnd listeners.
 				// https://stackoverflow.com/questions/47515232/how-to-set-file-input-value-when-dropping-file-on-page
-				const dropZone = document.getElementById('drop_zone');
+                const dropZone = document.getElementById('drop_zone');
 				const target = document.documentElement;
 				const fileInput = document.getElementById('shot_user_shot');
 				const previewImage = document.getElementById('previewImage');
@@ -51,12 +51,12 @@ document.addEventListener("turbolinks:load", function() {
 
 
 				if (dropZone) {
-                    console.log("dropZone : ", dropZone)
-					dropZone.addEventListener('dragover', handleDragOver, false);
+                    dropZone.addEventListener('dragover', handleDragOver, false);
 					dropZone.addEventListener('drop', handleFileSelect, false);
 
 					// Drop zone classes itself
 					dropZone.addEventListener('dragover', (e) => {
+                        event.preventDefault();
 						dropZone.classList.add('fire');
 					}, false);
 
@@ -80,7 +80,6 @@ document.addEventListener("turbolinks:load", function() {
 
 					// Body specific 
 					target.addEventListener('dragover', (e) => {
-						e.preventDefault();
 						dropZone.classList.add('dragging');
 					}, false);
 
